@@ -1,18 +1,19 @@
-// routes/index.js
 const express = require('express');
 const router = express.Router();
 const Url = require('../models/url');
+const BASE_URL = process.env.BASE_URL;
 
 router.get('/', (req, res) => {
   res.render('index', {
     gaTrackingId: process.env.GA_TRACKING_ID,
-    fbPixelId: process.env.FB_PIXEL_ID
+    fbPixelId: process.env.FB_PIXEL_ID,
+    shortUrl: undefined
   });
 });
 
 router.get('/analytics', (req, res) => {
-  res.render('analytics')
-})
+  res.render('analytics');
+});
 
 router.post('/shorten', async (req, res) => {
   const { originalUrl } = req.body;
@@ -25,8 +26,11 @@ router.post('/shorten', async (req, res) => {
   const newUrl = new Url({ originalUrl, shortUrl, ipAddress });
   await newUrl.save();
 
+  // Construct the full short URL
+  const fullShortUrl = `${BASE_URL}/${shortUrl}`;
+
   res.render('index', {
-    shortUrl,
+    shortUrl: fullShortUrl,
     gaTrackingId: process.env.GA_TRACKING_ID,
     fbPixelId: process.env.FB_PIXEL_ID
   });
