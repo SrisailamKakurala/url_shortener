@@ -71,16 +71,16 @@
   });
 
   const url = '<%= baseUrl %>'
-  console.log(url)
-   // Add event listener for copy button
-   const copy = document.querySelector('#copy');
-    if (copy) {
-      copy.addEventListener('click', () => {
+  // Add event listener for copy button
+  const copy = document.querySelector('#copy');
+  if (copy) {
+    copy.addEventListener('click', () => {
+        console.log('url: ', url)
         const s_url = document.querySelector('#s_url');
         if (s_url) {
           const urlText = s_url.innerText || s_url.textContent; // Get the text content of the s_url element
-          navigator.clipboard.writeText(`${process.env.BASE_URL}/${urlText}`).then(() => {
-            console.log('Text copied to clipboard:', `${process.env.BASE_URL}/${urlText}`);
+          navigator.clipboard.writeText(`${url}/${urlText}`).then(() => {
+            console.log('Text copied to clipboard:', `${url}/${urlText}`);
           }).catch(err => {
             console.error('Failed to copy text: ', err);
           });
