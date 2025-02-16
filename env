@@ -1,0 +1,5 @@
+BASE_URL=https://urlshortener-production-2f99.up.railway.app
+GA_TRACKING_ID=G-1RWBWBB5D6
+FB_PIXEL_ID=762309122721004
+MONGO_URL=mongodb+srv://kakuralasrisailam:34bdfa642eo3@cluster0.w9agr4f.mongodb.net/urlshortener?retryWrites=true&w=majority&appName=Cluster0
+PORT=5050

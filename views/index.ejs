@@ -1,0 +1,93 @@
+<!-- views/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Shortener</title>
+  <script src="https://kit.fontawesome.com/5738f81d64.js" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=<%= gaTrackingId %>"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', '<%= gaTrackingId %>');
+  </script>
+  <!-- End Google Analytics -->
+  <!-- Meta Pixel Code -->
+  <script>
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () {
+        n.callMethod ?
+          n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+      };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+      n.queue = []; t = b.createElement(e); t.async = !0;
+      t.src = v; s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s)
+    }(window, document, 'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '<%= fbPixelId %>');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=<%= fbPixelId %>&ev=PageView&noscript=1" /></noscript>
+  <!-- End Meta Pixel Code -->
+
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="w-[100vw] h-[100vh] bg-slate-800 font-['Oswald'] text-white p-8 flex justify-center flex-col items-center gap-10">
+  <div class="heading flex justify-center items-center">
+    <h1 class="text-4xl font-bold"><span class="text-lime-400">U</span>RL SHORTENER</h1>
+  </div>
+  <div class="w-[60vw] p-8 bg-white rounded-xl border-4 border-lime-400  ">
+    <form class="flex flex-col gap-5 justify-center items-center mb-10" action="/shorten" method="POST">
+      <input class="bg-slate-100 w-full rounded-xl px-4 py-2 font-semibold text-black" type="text" name="originalUrl" placeholder="Enter URL" required>
+      <button class="bg-slate-900 hover:bg-slate-800 text-white rounded-md w-[150px] px-4 py-2" type="submit">Shorten</button>
+    </form>
+    <% if (typeof shortUrl !=='undefined' ) { %>
+      <p class="text-red-500 font-semibold mx-auto float-left">Shortened URL: <a id="s_url" class=" text-blue-600 ml-8" href="<%= shortUrl %>">
+          <%= shortUrl %> 
+        </a></p>
+        <i class="fa-solid fa-copy fa-lg text-slate-900 ml-5 cursor-pointer" name="copy" id="copy"></i>
+      <% } %>
+  </div>
+
+</body>
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.location.pathname === '/') {
+      const s_url = document.querySelector('#s_url');
+      if (s_url) {
+        s_url.innerHTML = '';
+      }
+    }
+  });
+
+  const url = '<%= baseUrl %>'
+  console.log(url)
+   // Add event listener for copy button
+   const copy = document.querySelector('#copy');
+    if (copy) {
+      copy.addEventListener('click', () => {
+        const s_url = document.querySelector('#s_url');
+        if (s_url) {
+          const urlText = s_url.innerText || s_url.textContent; // Get the text content of the s_url element
+          navigator.clipboard.writeText(`${process.env.BASE_URL}/${urlText}`).then(() => {
+            console.log('Text copied to clipboard:', `${process.env.BASE_URL}/${urlText}`);
+          }).catch(err => {
+            console.error('Failed to copy text: ', err);
+          });
+        }
+      });
+    }
+
+  
+</script>
+</html>
